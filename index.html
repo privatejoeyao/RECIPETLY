@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Receiptly Web</title>
+  <title>Receiptly Web MVP</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,31 +13,39 @@
     <p>Generate receipts in 30 seconds – Free & No Login</p>
   </div>
 
-  <div id="form">
-    <input type="text" id="merchant" placeholder="Merchant Name">
-    <input type="text" id="client" placeholder="Client Name">
+  <div id="container">
+    <div id="form">
+      <input type="text" id="merchant" placeholder="Merchant Name" oninput="updatePreview()">
+      <input type="text" id="client" placeholder="Client Name" oninput="updatePreview()">
 
-    <div id="items-container">
-      <div class="item-row">
-        <input type="text" class="item-name" placeholder="Item / Service">
-        <input type="number" class="item-amount" placeholder="Amount">
+      <div id="items-container">
+        <div class="item-row">
+          <select class="item-name" onchange="updatePreview()">
+            <option value="Service A">Service A</option>
+            <option value="Service B">Service B</option>
+            <option value="Service C">Service C</option>
+          </select>
+          <input type="number" class="item-amount" placeholder="Amount" oninput="updatePreview()">
+        </div>
       </div>
+      <button type="button" onclick="addItem()">+ Add Item</button>
+
+      <select id="currency" onchange="updatePreview()">
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="TWD">TWD</option>
+        <option value="JPY">JPY</option>
+      </select>
+
+      <button type="button" onclick="generatePDF()">Download PDF</button>
     </div>
-    <button type="button" onclick="addItem()">+ Add Item</button>
 
-    <select id="currency">
-      <option value="USD">USD</option>
-      <option value="EUR">EUR</option>
-      <option value="TWD">TWD</option>
-      <option value="JPY">JPY</option>
-    </select>
-
-    <button type="button" onclick="generatePDF()">Download PDF</button>
+    <div id="preview">
+      <h3>Receipt Preview</h3>
+      <div id="receipt-preview-content"></div>
+    </div>
   </div>
 
-  <div id="preview"></div>
-
-  <!-- 引入最新 jsPDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="script.js"></script>
 </body>
