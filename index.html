@@ -13,19 +13,28 @@
   <div id="form">
     <input type="text" id="merchant" placeholder="Merchant Name">
     <input type="text" id="client" placeholder="Client Name">
-    <input type="text" id="item" placeholder="Item / Service">
-    <input type="number" id="amount" placeholder="Amount">
+
+    <div id="items-container">
+      <div class="item-row">
+        <input type="text" class="item-name" placeholder="Item / Service">
+        <input type="number" class="item-amount" placeholder="Amount">
+      </div>
+    </div>
+    <button type="button" onclick="addItem()">+ Add Item</button>
+
     <select id="currency">
       <option value="USD">USD</option>
       <option value="EUR">EUR</option>
       <option value="TWD">TWD</option>
       <option value="JPY">JPY</option>
     </select>
-    <button onclick="generatePDF()">Download PDF</button>
+
+    <button type="button" onclick="generatePDF()">Download PDF</button>
   </div>
 
   <div id="preview"></div>
 
+  <!-- 引入最新 jsPDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="script.js"></script>
 </body>
