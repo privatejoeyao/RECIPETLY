@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Receiptly Web</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Receiptly</h1>
+  <p>Generate receipts in 30 seconds – Free & No Login</p>
+  <div id="form">
+    <input type="text" id="merchant" placeholder="Merchant Name">
+    <input type="text" id="client" placeholder="Client Name">
+    <input type="text" id="item" placeholder="Item / Service">
+    <input type="number" id="amount" placeholder="Amount">
+    <select id="currency">
+      <option value="USD">USD</option>
+      <option value="EUR">EUR</option>
+      <option value="TWD">TWD</option>
+      <option value="JPY">JPY</option>
+    </select>
+    <button onclick="generatePDF()">Download PDF</button>
+  </div>
+  <div id="preview"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
