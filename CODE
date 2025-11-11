@@ -1,0 +1,77 @@
+// src/App.jsx
+import React, { useState } from 'react';
+import { jsPDF } from 'jspdf';
+import './App.css';
+
+// 把這裡換成你的 Google Apps Script 網路應用程式網址
+const GOOGLE_SHEET_WEBHOOK_URL = '你的 Apps Script 網址';
+
+function App() {
+  const [merchant, setMerchant] = useState('');
+  const [client, setClient] = useState('');
+  const [item, setItem] = useState('');
+  const [amount, setAmount] = useState('');
+  const [currency, setCurrency] = useState('USD');
+
+  const date = new Date().toLocaleDateString();
+  const receiptNumber = 'RCPT-' + Math.floor(Math.random() * 100000);
+
+  const generatePDF = () => {
+    // 生成 PDF
+    const doc = new jsPDF();
+    doc.setFontSize(18);
+    doc.text('Receipt', 105, 20, null, null, 'center');
+    doc.setFontSize(12);
+    doc.text(`Merchant: ${merchant}`, 20, 40);
+    doc.text(`Client: ${client}`, 20, 50);
+    doc.text(`Item: ${item}`, 20, 60);
+    doc.text(`Amount: ${amount} ${currency}`, 20, 70);
+    doc.text(`Date: ${date}`, 20, 80);
+    doc.text(`Receipt #: ${receiptNumber}`, 20, 90);
+    doc.save(`receipt_${receiptNumber}.pdf`);
+
+    // 追蹤數據到 Google Sheet
+    fetch(GOOGLE_SHEET_WEBHOOK_URL, {
+      method: 'POST',
+      body: JSON.stringify({ merchant, client, item, amount, currency }),
+      headers: { 'Content-Type': 'application/json' },
+    }).catch((err) => console.error('Data tracking failed:', err));
+  };
+
+  return (
+    <div className="container">
+      <header>
+        <h1>Receiptly</h1>
+        <p>Generate receipts in 30 seconds – Free & No Login</p>
+      </header>
+      <main>
+        <div className="form-section">
+          <input type="text" placeholder="Merchant Name" value={merchant} onChange={(e) => setMerchant(e.target.value)} />
+          <input type="text" placeholder="Client Name" value={client} onChange={(e) => setClient(e.target.value)} />
+          <input type="text" placeholder="Item / Service" value={item} onChange={(e) => setItem(e.target.value)} />
+          <input type="number" placeholder="Amount" value={amount} onChange={(e) => setAmount(e.target.value)} />
+          <select value={currency} onChange={(e) => setCurrency(e.target.value)}>
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="TWD">TWD</option>
+            <option value="JPY">JPY</option>
+          </select>
+          <button onClick={generatePDF}>Download PDF</button>
+        </div>
+        <div className="preview-section">
+          <h3>Preview</h3>
+          <div className="receipt-preview">
+            <p><strong>Merchant:</strong> {merchant || 'Merchant Name'}</p>
+            <p><strong>Client:</strong> {client || 'Client Name'}</p>
+            <p><strong>Item:</strong> {item || 'Item / Service'}</p>
+            <p><strong>Amount:</strong> {amount ? `${amount} ${currency}` : '0 USD'}</p>
+            <p><strong>Date:</strong> {date}</p>
+            <p><strong>Receipt #:</strong> {receiptNumber}</p>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
+
+export default App;
